@@ -4,6 +4,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.Objects;
 
+import static com.algashop.ordering.domain.exception.ErrorMessages.VALIDATION_ERROR_EMAIL_IS_INVALID;
+
 public class FieldValidations {
 
     public FieldValidations() {
@@ -21,7 +23,7 @@ public class FieldValidations {
     }
 
     public static void requiresValidEmail(String email) {
-        requiresValidEmail(email, null);
+        requiresValidEmail(email, VALIDATION_ERROR_EMAIL_IS_INVALID);
     }
 
     public static void requiresValidEmail(String email, String errorMessage) {
