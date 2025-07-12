@@ -15,6 +15,10 @@ public record OrderId(UUID value) {
         this(IdGenerator.generateTimeBasedUUID());
     }
 
+    public OrderId(String value) {
+        this(UUID.fromString(value));
+    }
+
     @Override
     public String toString() {
         return value.toString();

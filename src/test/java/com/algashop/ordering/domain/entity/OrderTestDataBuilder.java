@@ -5,9 +5,11 @@ import com.algashop.ordering.domain.valueobject.id.CustomerId;
 
 import java.time.LocalDate;
 
+import static com.algashop.ordering.domain.entity.CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
+
 public class OrderTestDataBuilder {
 
-    private CustomerId customerId = new CustomerId();
+    private CustomerId customerId = DEFAULT_CUSTOMER_ID;
 
     private PaymentMethod paymentMethod = PaymentMethod.GATEWAY_BALANCE;
 
@@ -53,8 +55,12 @@ public class OrderTestDataBuilder {
                 order.markAsPaid();
             }
             case READY -> {
+                order.place();
+                order.markAsPaid();
+                order.markAsReady();
             }
             case CANCELED -> {
+                order.cancel();
             }
         }
 
@@ -66,14 +72,15 @@ public class OrderTestDataBuilder {
                 .address(anAddress())
                 .document(new Document("225-09-1992"))
                 .phone(new Phone("123-111-9911"))
+                .fullName(new FullName("John", "Doe"))
                 .email(new Email("jhon.doe@gmail.com"))
-                .fullName(new FullName("John", "Doe")).build();
+                .build();
     }
 
     public static Shipping aShipping() {
         return Shipping.builder()
                 .cost(new Money("10"))
-                .expectedDate(LocalDate.now().plusDays(2))
+                .expectedDate(LocalDate.now().plusWeeks(1))
                 .address(anAddress())
                 .recipient(Recipient.builder()
                         .fullName(new FullName("John", "Doe"))
