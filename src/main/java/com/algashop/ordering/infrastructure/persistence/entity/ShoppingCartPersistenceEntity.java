@@ -85,4 +85,14 @@ public class ShoppingCartPersistenceEntity {
         }
         return customer.getId();
     }
+
+    public void replaceItems(Set<ShoppingCartItemPersistenceEntity> updatedItems) {
+        if (updatedItems == null || updatedItems.isEmpty()) {
+            this.setItems(new HashSet<>());
+            return;
+        }
+
+        updatedItems.forEach(i -> i.setShoppingCart(this));
+        this.setItems(updatedItems);
+    }
 }

@@ -23,6 +23,7 @@ public class ShoppingCartPersistenceEntityDisassembler {
                 .id(new ShoppingCartId(source.getId()))
                 .customerId(new CustomerId(source.getCustomerId()))
                 .totalAmount(new Money(source.getTotalAmount()))
+                .totalItems(new Quantity(source.getTotalItems()))
                 .createdAt(source.getCreatedAt())
                 .items(toItemsDomainEntities(source.getItems()))
                 .build();
