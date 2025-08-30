@@ -1,0 +1,41 @@
+package com.algashop.ordering.domain.order;
+
+import com.algashop.ordering.domain.product.ProductTestDataBuilder;
+import com.algashop.ordering.domain.product.Product;
+import com.algashop.ordering.domain.commons.Quantity;
+import com.algashop.ordering.domain.customer.CustomerId;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+class OrderFactoryTest {
+
+    @Test
+    public void shouldGenerateFilledOrderThatCanBePlaced() {
+        Shipping shipping = OrderTestDataBuilder.aShipping();
+        Billing billing = OrderTestDataBuilder.aBilling();
+
+        Product product = ProductTestDataBuilder.aProduct().build();
+        PaymentMethod paymentMethod = PaymentMethod.GATEWAY_BALANCE;
+
+        Quantity quantity = new Quantity(1);
+        CustomerId customerId = new CustomerId();
+
+        Order order = OrderFactory.filled(
+                customerId, shipping, billing, paymentMethod, product, quantity
+        );
+
+        Assertions.assertWith(order,
+                o-> Assertions.assertThat(o.shipping()).isEqualTo(shipping),
+                o-> Assertions.assertThat(o.billing()).isEqualTo(billing),
+                o-> Assertions.assertThat(o.paymentMethod()).isEqualTo(paymentMethod),
+                o-> Assertions.assertThat(o.itens()).isNotEmpty(),
+                o-> Assertions.assertThat(o.customerId()).isNotNull(),
+                o-> Assertions.assertThat(o.isDraft()).isTrue()
+        );
+
+        order.place();
+
+        Assertions.assertThat(order.isPlaced()).isTrue();
+
+    }
+}

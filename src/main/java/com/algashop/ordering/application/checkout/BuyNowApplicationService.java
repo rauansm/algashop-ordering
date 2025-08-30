@@ -1,0 +1,75 @@
+package com.algashop.ordering.application.checkout;
+
+import com.algashop.ordering.domain.commons.Quantity;
+import com.algashop.ordering.domain.commons.ZipCode;
+import com.algashop.ordering.domain.customer.Customer;
+import com.algashop.ordering.domain.customer.CustomerId;
+import com.algashop.ordering.domain.customer.CustomerNotFoundException;
+import com.algashop.ordering.domain.customer.Customers;
+import com.algashop.ordering.domain.order.*;
+import com.algashop.ordering.domain.order.shipping.OriginAddressService;
+import com.algashop.ordering.domain.order.shipping.ShippingCostService;
+import com.algashop.ordering.domain.product.Product;
+import com.algashop.ordering.domain.product.ProductCatalogService;
+import com.algashop.ordering.domain.product.ProductId;
+import com.algashop.ordering.domain.product.ProductNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+
+@Service
+@RequiredArgsConstructor
+public class BuyNowApplicationService {
+
+    private final BuyNowService buyNowService;
+    private final ProductCatalogService productCatalogService;
+
+    private final ShippingCostService shippingCostService;
+    private final OriginAddressService originAddressService;
+
+    private final Orders orders;
+    private final Customers customers;
+
+    private final ShippingInputDisassembler shippingInputDisassembler;
+    private final BillingInputDisassembler billingInputDisassembler;
+
+    @Transactional
+    public String buyNow(BuyNowInput input) {
+        Objects.requireNonNull(input);
+
+        PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
+        CustomerId customerId = new CustomerId(input.getCustomerId());
+        Quantity quantity = new Quantity(input.getQuantity());
+
+        Customer customer = customers.ofId(customerId).orElseThrow(CustomerNotFoundException::new);
+
+        Product product = findProduct(new ProductId(input.getProductId()));
+
+        var shippingCalculationResult = calculateShippingCost(input.getShipping());
+
+        Shipping shipping = shippingInputDisassembler.toDomainModel(input.getShipping(),
+                shippingCalculationResult);
+
+        Billing billing = billingInputDisassembler.toDomainModel(input.getBilling());
+
+        Order order = buyNowService.buyNow(product, customer, billing, shipping, quantity, paymentMethod);
+
+        orders.add(order);
+
+        return order.id().toString();
+    }
+
+    private ShippingCostService.CalculationResult calculateShippingCost(ShippingInput shipping) {
+        ZipCode origin = originAddressService.originAddress().zipCode();
+        ZipCode destination = new ZipCode(shipping.getAddress().getZipCode());
+        return shippingCostService.calculate(new ShippingCostService.CalculationRequest(origin, destination));
+    }
+
+    private Product findProduct(ProductId productId) {
+        return productCatalogService.ofId(productId)
+                .orElseThrow(ProductNotFoundException::new);
+    }
+
+}
