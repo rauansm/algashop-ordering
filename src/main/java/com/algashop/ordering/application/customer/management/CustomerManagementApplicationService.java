@@ -29,7 +29,7 @@ public class CustomerManagementApplicationService {
                 new Email(input.getEmail()),
                 new Phone(input.getPhone()),
                 new Document(input.getDocument()),
-                input.isPromotionNotificationsAllowed(),
+                input.getPromotionNotificationsAllowed(),
                 Address.builder()
                         .zipCode(new ZipCode(address.getZipCode()))
                         .state(address.getState())
