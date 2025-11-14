@@ -1,13 +1,17 @@
 package com.algashop.ordering.infrastructure.persistence.order;
 
-import com.algashop.ordering.domain.customer.CustomerTestDataBuilder;
-import com.algashop.ordering.domain.order.Order;
-import com.algashop.ordering.domain.order.OrderStatus;
-import com.algashop.ordering.domain.order.OrderTestDataBuilder;
-import com.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
-import com.algashop.ordering.infrastructure.SpringDataAuditingConfig;
-import com.algashop.ordering.infrastructure.persistence.customer.CustomersPersistenceProvider;
-import com.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
+import com.algashop.ordering.core.domain.customer.CustomerTestDataBuilder;
+import com.algashop.ordering.core.domain.order.Order;
+import com.algashop.ordering.core.domain.order.OrderStatus;
+import com.algashop.ordering.core.domain.order.OrderTestDataBuilder;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomerPersistenceEntityAssembler;
+import com.algashop.ordering.infrastructure.persistence.commons.SpringDataAuditingConfig;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomersPersistenceProvider;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomerPersistenceEntityDisassembler;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntityAssembler;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntityDisassembler;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntityRepository;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrdersPersistenceProvider;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

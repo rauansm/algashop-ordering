@@ -1,14 +1,15 @@
 package com.algashop.ordering.infrastructure.listener.customer;
 
-import com.algashop.ordering.application.customer.loyaltypoints.CustomerLoyaltyPointsApplicationService;
-import com.algashop.ordering.application.customer.notification.CustomerNotificationApplicationService;
-import com.algashop.ordering.application.customer.notification.CustomerNotificationApplicationService.NotifyNewRegistrationInput;
-import com.algashop.ordering.domain.commons.Email;
-import com.algashop.ordering.domain.commons.FullName;
-import com.algashop.ordering.domain.customer.CustomerId;
-import com.algashop.ordering.domain.customer.CustomerRegisteredEvent;
-import com.algashop.ordering.domain.order.OrderId;
-import com.algashop.ordering.domain.order.OrderReadyEvent;
+import com.algashop.ordering.core.application.customer.CustomerLoyaltyPointsApplicationService;
+import com.algashop.ordering.core.ports.out.customer.ForNotifyingCustomers;
+import com.algashop.ordering.core.ports.out.customer.ForNotifyingCustomers.NotifyNewRegistrationInput;
+import com.algashop.ordering.core.domain.commons.Email;
+import com.algashop.ordering.core.domain.commons.FullName;
+import com.algashop.ordering.core.domain.customer.CustomerId;
+import com.algashop.ordering.core.domain.customer.CustomerRegisteredEvent;
+import com.algashop.ordering.core.domain.order.OrderId;
+import com.algashop.ordering.core.domain.order.OrderReadyEvent;
+import com.algashop.ordering.infrastructure.adapters.in.listener.customer.CustomerEventListener;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ class CustomerEventListenerIT {
     private CustomerLoyaltyPointsApplicationService loyaltyPointsApplicationService;
 
     @MockitoSpyBean
-    private CustomerNotificationApplicationService notificationApplicationService;
+    private ForNotifyingCustomers notificationApplicationService;
 
     @Test
     public void shouldListenOrderReadyEvent() {

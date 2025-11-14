@@ -1,11 +1,12 @@
 package com.algashop.ordering.infrastructure.persistence.customer;
 
-import com.algashop.ordering.infrastructure.persistence.commons.AddressEmbeddable;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomerPersistenceEntity;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.commons.AddressEmbeddable;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
-import static com.algashop.ordering.domain.customer.CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
+import static com.algashop.ordering.core.domain.customer.CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
 
 public class CustomerPersistenceEntityTestDataBuilder {
 

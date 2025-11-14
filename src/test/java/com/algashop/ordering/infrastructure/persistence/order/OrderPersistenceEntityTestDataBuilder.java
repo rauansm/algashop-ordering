@@ -1,8 +1,10 @@
 package com.algashop.ordering.infrastructure.persistence.order;
 
-import com.algashop.ordering.domain.IdGenerator;
+import com.algashop.ordering.core.domain.IdGenerator;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderItemPersistenceEntity;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntity;
 import com.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityTestDataBuilder;
-import com.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity.OrderPersistenceEntityBuilder;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntity.OrderPersistenceEntityBuilder;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

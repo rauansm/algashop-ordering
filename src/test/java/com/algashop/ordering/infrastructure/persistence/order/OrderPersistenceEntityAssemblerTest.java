@@ -1,10 +1,13 @@
 package com.algashop.ordering.infrastructure.persistence.order;
 
-import com.algashop.ordering.domain.order.Order;
-import com.algashop.ordering.domain.order.OrderItem;
-import com.algashop.ordering.domain.order.OrderTestDataBuilder;
+import com.algashop.ordering.core.domain.order.Order;
+import com.algashop.ordering.core.domain.order.OrderItem;
+import com.algashop.ordering.core.domain.order.OrderTestDataBuilder;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderItemPersistenceEntity;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntity;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntityAssembler;
 import com.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityTestDataBuilder;
-import com.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
+import com.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomerPersistenceEntityRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
