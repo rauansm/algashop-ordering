@@ -2,10 +2,15 @@ package com.algashop.ordering.infrastructure.adapters.out.web.shipping.client.ra
 
 import com.algashop.ordering.core.domain.order.shipping.ShippingCostService;
 import com.algashop.ordering.core.domain.commons.Money;
+import com.algashop.ordering.infrastructure.adapters.in.web.exceptionhandler.BadGatewayException;
+import com.algashop.ordering.infrastructure.adapters.in.web.exceptionhandler.GatewayTimeoutException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 
+import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 
 @Component
@@ -13,15 +18,19 @@ import java.time.LocalDate;
 @ConditionalOnProperty(name = "algashop.integrations.shipping.provider", havingValue = "RAPIDEX")
 public class ShippingCostServiceRapidexImpl implements ShippingCostService {
 
-    public final RapiDexAPIClient rapiDexAPIClient;
+    private final ResilientRapiDexAPIClient rapiDexAPIClient;
 
     @Override
     public CalculationResult calculate(CalculationRequest request) {
-       DeliveryCostResponse response = rapiDexAPIClient.calculate(
-                new DeliveryCostRequest(request.origin().value(),
-                        request.destination().value()));
+        DeliveryCostResponse response = rapiDexAPIClient.calculate(
+                new DeliveryCostRequest(
+                        request.origin().value(),
+                        request.destination().value()
+                )
+        );
 
         LocalDate expectedDeliveryDate = LocalDate.now().plusDays(response.getEstimatedDaysToDeliver());
+
         return CalculationResult.builder()
                 .cost(new Money(response.getDeliveryCost()))
                 .expectedDate(expectedDeliveryDate)
